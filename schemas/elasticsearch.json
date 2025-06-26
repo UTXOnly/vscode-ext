@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "elasticsearch Integration Configuration",
+  "type": "object",
+  "properties": {
+    "instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "Host to connect to"
+          },
+          "port": {
+            "type": "integer",
+            "description": "Port to connect to"
+          },
+          "username": {
+            "type": "string",
+            "description": "Username for authentication"
+          },
+          "password": {
+            "type": "string",
+            "description": "Password for authentication"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "instances"
+  ]
+}
