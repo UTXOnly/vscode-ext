@@ -1,0 +1,156 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Datadog Redis Integration Configuration",
+  "type": "object",
+  "properties": {
+    "init_config": {
+      "type": "object",
+      "description": "Global configuration options.",
+      "properties": {
+        "service": {
+          "type": "string",
+          "description": "Attach the tag `service:<SERVICE>` to every metric, event, and service check emitted by this integration. Additionally, this sets the default `service` for every log source."
+        }
+      },
+      "default": {}
+    },
+    "instances": {
+      "type": "array",
+      "description": "List of Redis instances to monitor.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "Enter the host to connect to."
+          },
+          "port": {
+            "type": "integer",
+            "description": "Enter the port of the host to connect to.",
+            "default": 6379
+          },
+          "unix_socket_path": {
+            "type": "string",
+            "description": "Connect through a unix socket instead of using a `host` and `port`."
+          },
+          "db": {
+            "type": "integer",
+            "description": "The index of the database (keyspace) to use. The default is index 0. Any other index results in a SELECT command sent upon connection to choose the desired database. For redis.clone, this can also be NA in which case the same database is used as in rc.",
+            "default": 0
+          },
+          "username": {
+            "type": "string",
+            "description": "The username for the connection. Redis 6+ only."
+          },
+          "password": {
+            "type": "string",
+            "description": "The password for the connection."
+          },
+          "collect_client_metrics": {
+            "type": "boolean",
+            "description": "Collects metrics using the `CLIENT` command. This requires the Redis CLIENT command to be available on your servers.",
+            "default": false
+          },
+          "socket_timeout": {
+            "type": "integer",
+            "description": "Custom timeout for the check request.",
+            "default": 5
+          },
+          "ssl": {
+            "type": "boolean",
+            "description": "Enable SSL/TLS encryption for the check.",
+            "default": false
+          },
+          "ssl_keyfile": {
+            "type": "string",
+            "description": "The path to the client-side private keyfile."
+          },
+          "ssl_certfile": {
+            "type": "string",
+            "description": "The path to the client-side certificate file."
+          },
+          "ssl_ca_certs": {
+            "type": "string",
+            "description": "The path to the ca_certs file."
+          },
+          "ssl_cert_reqs": {
+            "type": "integer",
+            "description": "Specifies whether a certificate is required from the other side of the connection, and whether it's validated if provided. * 0 for ssl.CERT_NONE (certificates ignored) * 1 for ssl.CERT_OPTIONAL (not required, but validated if provided) * 2 for ssl.CERT_REQUIRED (required and validated)",
+            "default": 2
+          },
+          "keys": {
+            "type": "array",
+            "description": "Enter the list of keys to collect the lengths from. The length is 1 for strings. The length is zero for keys that have a type other than list, set, hash, or sorted set. Note: Keys can be expressed as patterns.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "warn_on_missing_keys": {
+            "type": "boolean",
+            "description": "If you provide a list of 'keys', set this to true to have the Agent log a warning when keys are missing.",
+            "default": true
+          },
+          "slowlog-max-len": {
+            "type": "integer",
+            "description": "Set the maximum number of entries to fetch from the slow query log. By default, the check reads this value from the redis config, but is limited to 128. Set a custom value here if you need to get more than 128 slowlog entries every 15 seconds. Warning: Higher values may impact the performance of your Redis instance.",
+            "default": 128
+          },
+          "command_stats": {
+            "type": "boolean",
+            "description": "Collect INFO COMMANDSTATS output as metrics.",
+            "default": false
+          },
+          "disable_connection_cache": {
+            "type": "boolean",
+            "description": "Enable the connections cache so the check attempts to reuse the same Redis connections at every collection cycle. If disabled, this prevents stale connections.",
+            "default": false
+          },
+          "tags": {
+            "type": "array",
+            "description": "A list of tags to attach to every metric and service check emitted by this instance.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "service": {
+            "type": "string",
+            "description": "Attach the tag `service:<SERVICE>` to every metric, event, and service check emitted by this integration. Overrides any `service` defined in the `init_config` section."
+          },
+          "min_collection_interval": {
+            "type": "number",
+            "description": "This changes the collection interval of the check.",
+            "default": 15
+          },
+          "empty_default_hostname": {
+            "type": "boolean",
+            "description": "This forces the check to send metrics with no hostname. This is useful for cluster-level checks.",
+            "default": false
+          },
+          "metric_patterns": {
+            "type": "object",
+            "description": "A mapping of metrics to include or exclude, with each entry being a regular expression. Metrics defined in `exclude` will take precedence in case of overlap.",
+            "properties": {
+              "include": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "exclude": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["host", "port"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["instances"],
+  "additionalProperties": false
+}
