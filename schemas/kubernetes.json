@@ -25,7 +25,8 @@
             "description": "Password for authentication"
           }
         }
-      }
+      },
+      "description": "Integration instances configuration"
     }
   },
   "required": [

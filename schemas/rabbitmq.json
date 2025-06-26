@@ -1,8 +1,50 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "rabbitmq Integration Configuration",
+  "title": "RabbitMQ Integration Configuration",
   "type": "object",
-  "properties": {},
+  "properties": {
+    "init_config": {
+      "type": "object",
+      "properties": {
+        "timeout": {
+          "type": "integer",
+          "description": "HTTP timeout in seconds",
+          "default": 10
+        },
+        "headers": {
+          "type": "object",
+          "description": "Additional HTTP headers"
+        },
+        "min_collection_interval": {
+          "type": "integer",
+          "description": "Minimum collection interval in seconds",
+          "default": 15
+        }
+      },
+      "description": "Initial configuration for the integration"
+    },
+    "logs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Log type (file, tcp, udp, etc.)"
+          },
+          "path": {
+            "type": "string",
+            "description": "Path to log file"
+          },
+          "source": {
+            "type": "string",
+            "description": "Log source identifier"
+          }
+        }
+      },
+      "description": "Log collection configuration"
+    }
+  },
   "required": [],
   "additionalProperties": false
 }

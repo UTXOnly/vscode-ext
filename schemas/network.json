@@ -1,8 +1,117 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "network Integration Configuration",
+  "title": "Network Integration Configuration",
   "type": "object",
-  "properties": {},
-  "required": [],
+  "properties": {
+    "init_config": {
+      "type": "object",
+      "properties": {
+        "min_collection_interval": {
+          "type": "integer",
+          "description": "Minimum collection interval in seconds",
+          "default": 15
+        }
+      },
+      "description": "Initial configuration for the integration"
+    },
+    "instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "collect_connection_state": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set to true to collect connection states for your interfaces\nNote: this will require either the command `ss` from system package `iproute2` or\nthe command `netstat` from the system package `net-tools` to be installed"
+          },
+          "collect_connection_queues": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set to true to enable connection queues collection\nNote: connection queues collections require both\n`collect_connection_state` and `collect_connection_queues` to be true\nbecause it also requires the command `ss` from system package `iproute2` or\nthe command `netstat` from the system package `net-tools` to be installed\nNote: This option is only available on linux and will be ignored in other systems."
+          },
+          "excluded_interfaces": {
+            "type": "array",
+            "default": [
+              "lo",
+              "lo0"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "description": "List of interface to exclude from the check."
+          },
+          "excluded_interface_re": {
+            "type": "string",
+            "default": null,
+            "description": "Completely ignore any network interface matching the given regex."
+          },
+          "combine_connection_states": {
+            "type": "boolean",
+            "default": true,
+            "description": "Set to false to not combine connection states.\nBy default we combine states like fin_wait_1 and fin_wait_2\ntogether into one state: 'closing' disable this option to get more granular data."
+          },
+          "collect_rate_metrics": {
+            "type": "boolean",
+            "default": true,
+            "description": "By default, most metrics are submitted as rates.\nHowever, some metrics like tcp/udp retransmissions and errors are\nbetter handled as counts.\nChoose to disable rate metrics by setting collect_rate_metrics to false."
+          },
+          "collect_count_metrics": {
+            "type": "boolean",
+            "default": false,
+            "description": "By default, most metrics are submitted as rates.\nHowever, some metrics like tcp/udp retransmissions and errors are\nbetter handled as counts.\nChoose to enable count metrics by setting collect_count_metrics to true.\nCount metrics have '.count' added to the metric name."
+          },
+          "conntrack_path": {
+            "type": "string",
+            "default": null,
+            "description": "Linux only.\nThe location of the conntrack executable in order to get the stats from conntrack -S.\nIt will be run with sudo by default, so an entry needs to be added to the sudoers file.\nBy default, these metrics will not be sent."
+          },
+          "use_sudo_conntrack": {
+            "type": "boolean",
+            "default": true,
+            "description": "Set to False to disable sudo when running `conntrack -S`\n(`sudo` isn't normally available in containers)"
+          },
+          "whitelist_conntrack_metrics": {
+            "type": "array",
+            "default": [
+              "max",
+              "count"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "description": "Linux only.\nNames of the conntrack metrics to whitelist for monitoring. The metric value is in the file\n/${proc}/sys/net/netfilter/nf_conntrack_${metric_name}.\nBy default the agent collects only max and count.\nRegex expressions for the project names are supported.\nBlacklist takes precedence over whitelist in case of overlap."
+          },
+          "blacklist_conntrack_metrics": {
+            "type": "array",
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "description": "Linux only.\nNames of the conntrack metrics to blacklist for monitoring. The metric value is in the file\n/${proc}/sys/net/netfilter/nf_conntrack_${metric_name}.\nIf set, whitelist default value is reset to [].\nRegex expressions for the project names are supported.\nBlacklist takes precedence over whitelist in case of overlap."
+          },
+          "collect_aws_ena_metrics": {
+            "type": "boolean",
+            "default": false,
+            "description": "Turn on collection of the AWS Elastic Network Adapter (ENA) statistics for network interfaces.\n\nThis will only work on ENA-enabled instances, see:\nhttps://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking-ena.html#ena-requirements\n\nNote that when running this check in container, it will return metrics for the container\nnetwork interfaces. To get host-level ENA metrics from a container, it needs to be executed\nwith `CAP_NET_ADMIN` capability and use the `host` network mode."
+          },
+          "collect_ethtool_metrics": {
+            "type": "boolean",
+            "default": false,
+            "description": "Linux only.\nEnable collection of ethtool statistics for network interfaces.\nThis will collect per queue and per cpu metrics depending on the driver.\n\nThe queue and cpu will be used as a tag when submitting metrics.\nFor example, 'queue_0_tx_cnt' will be submitted as 'system.net.ena.queue.tx_cnt' with tag 'queue:0'\n\nLoopback interfaces 'lo' and 'lo0' are excluded as they don't support SIOCETHTOOL.\n\nCurrently supported drivers:\n- ena\n- virtio_net\n- hv_netvsc\n- gve"
+          },
+          "disable_generic_tags": {
+            "type": "boolean",
+            "description": "Disable generic tags to avoid conflicts with other integrations",
+            "default": false
+          }
+        },
+        "required": []
+      },
+      "description": "Integration instances configuration"
+    }
+  },
+  "required": [
+    "instances"
+  ],
   "additionalProperties": false
 }

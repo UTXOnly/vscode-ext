@@ -1,8 +1,214 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "mysql Integration Configuration",
+  "title": "MySQL Integration Configuration",
   "type": "object",
-  "properties": {},
-  "required": [],
+  "properties": {
+    "init_config": {
+      "type": "object",
+      "properties": {
+        "propagate_agent_tags": {
+          "type": "boolean",
+          "default": false,
+          "description": "Set to `true` to propagate the tags from `datadog.yaml` to the check.\nWhen set to `true`, the tags from `datadog.yaml` are added to the check's tags for all instances."
+        },
+        "min_collection_interval": {
+          "type": "integer",
+          "description": "Minimum collection interval in seconds",
+          "default": 15
+        }
+      },
+      "description": "Initial configuration for the integration"
+    },
+    "instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "default": null,
+            "description": "MySQL host to connect to.\nNOTE: Even if the host is \"localhost\", the agent connects to MySQL using TCP/IP, unless you also\nprovide a value for the sock key (below)."
+          },
+          "username": {
+            "type": "string",
+            "default": null,
+            "description": "Username used to connect to MySQL."
+          },
+          "password": {
+            "type": "string",
+            "description": "Password associated to the MySQL user."
+          },
+          "port": {
+            "type": "number",
+            "default": 3306,
+            "description": "Port to use when connecting to MySQL."
+          },
+          "propagate_agent_tags": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set to `true` to propagate the tags from `datadog.yaml` to the check.\nWhen set to `true`, the tags from `datadog.yaml` are added to the check's tags for all instances."
+          },
+          "reported_hostname": {
+            "type": "string",
+            "description": "Set the reported hostname for this instance. This value overrides the hostname detected by the Agent\nand can be useful to set a custom hostname when connecting to a remote database through a proxy."
+          },
+          "exclude_hostname": {
+            "type": "boolean",
+            "default": false,
+            "description": "Omit the hostname from tags and events. This is useful when the database host is not monitored by an agent."
+          },
+          "sock": {
+            "type": "string",
+            "description": "Path to a Unix Domain Socket to use when connecting to MySQL (instead of a TCP socket).\nIf you specify a socket you dont need to specify a host."
+          },
+          "charset": {
+            "type": "string",
+            "default": null,
+            "description": "Charset you want to use."
+          },
+          "defaults_file": {
+            "type": "string",
+            "description": "Path to an alternative configuration mechanism file.\nIf providing this then there is no need to specify host, port, user, pass or socket."
+          },
+          "connect_timeout": {
+            "type": "number",
+            "default": 10,
+            "description": "Maximum number of seconds to wait before timing out when connecting to MySQL.\nThe default connection timeout is 10 seconds."
+          },
+          "read_timeout": {
+            "type": "number",
+            "default": null,
+            "description": "The timeout for reading from the connection in seconds.\nBy default, no read timeout is set."
+          },
+          "ssl": {
+            "type": "object",
+            "default": {
+              "key": "<KEY_FILE_PATH>",
+              "cert": "<CERT_FILE_PATH>",
+              "ca": "<CA_PATH_FILE>",
+              "check_hostname": true
+            },
+            "properties": {
+              "0": {
+                "type": "string"
+              },
+              "1": {
+                "type": "string"
+              },
+              "2": {
+                "type": "string"
+              },
+              "3": {
+                "type": "boolean"
+              }
+            },
+            "description": "Use this section to configure a TLS connection between the Agent and MySQL.\n\nThe following fields are supported:\n\nkey: Path to a key file.\ncert: Path to a cert file.\nca: Path to a CA bundle file.\ncheck_hostname: Set to false to ignore the strict relationship between the certificate and the hostname."
+          },
+          "additional_status": {
+            "type": "array",
+            "default": [
+              {
+                "name": "innodb_rows_read",
+                "metric_name": "mysql.innodb.rows_read",
+                "type": "rate"
+              }
+            ],
+            "items": {
+              "type": "object"
+            },
+            "description": "Set this parameter to collect additional MySQL status variables as metrics\nfrom \"SHOW GLOBAL STATUS\"\nSee MySQL documentation for available variables: https://dev.mysql.com/doc/refman/8.0/en/show-status.html\n\nThe following fields are supported:\n\nname : MySQL status name on \"SHOW GLOBAL STATUS\"\nmetric_name : metric name\ntype : gauge | rate | count | ..."
+          },
+          "additional_variable": {
+            "type": "array",
+            "default": [
+              {
+                "name": "long_query_time",
+                "metric_name": "mysql.performance.long_query_time",
+                "type": "gauge"
+              }
+            ],
+            "items": {
+              "type": "object"
+            },
+            "description": "Set this parameter to collect additional MySQL variables as metrics\nfrom \"SHOW GLOBAL VARIABLES\"\nSee MySQL documentation for available variables: https://dev.mysql.com/doc/refman/8.0/en/show-variables.html\n\nThe following fields are supported:\n\nname : MySQL variable name on \"SHOW GLOBAL VARIABLES\"\nmetric_name : metric name\ntype : gauge | rate | count | ..."
+          },
+          "max_custom_queries": {
+            "type": "integer",
+            "default": 20,
+            "description": "Set the maximum number of custom queries to execute with this integration.\n\nWARNING: This only applies to the deprecated `queries` option."
+          },
+          "queries": {
+            "type": "array",
+            "default": [
+              {
+                "query": "<QUERY>",
+                "metric": "<METRIC_NAME>",
+                "tags": [
+                  "<METRIC_TAG_KEY>:<METRIC_TAG_VALUE>"
+                ],
+                "type": "<METRIC_TYPE>",
+                "field": "<FIELD_NAME>"
+              }
+            ],
+            "items": {
+              "type": "object"
+            },
+            "description": "Define custom queries to collect custom metrics from your MySQL database.\n\nSee https://docs.datadoghq.com/integrations/guide/mysql-custom-queries to learn more.\n\nWARNING: This option is deprecated and will be removed in a future release.\nUse the `custom_queries` option instead."
+          },
+          "dbm": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set to `true` enable Database Monitoring."
+          },
+          "log_unobfuscated_queries": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set to `true` to enable logging of original unobfuscated SQL queries when obfuscation errors occur.\nFor security purposes, it is recommended to use this option for debugging only when requested by Datadog Support.\nNote: This option only applies when `dbm` is enabled."
+          },
+          "log_unobfuscated_plans": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set to `true` to enable logging of original unobfuscated SQL plans when obfuscation errors occur.\nFor security purposes, it is recommended to use this option for debugging only when requested by Datadog Support.\nNote: This option only applies when `dbm` is enabled."
+          },
+          "database_instance_collection_interval": {
+            "type": "number",
+            "default": false,
+            "description": "Set the database instance collection interval (in seconds). The database instance collection sends\nbasic information about the database instance along with a signal that it still exists.\nThis collection does not involve any additional queries to the database."
+          },
+          "disable_generic_tags": {
+            "type": "boolean",
+            "description": "Disable generic tags to avoid conflicts with other integrations",
+            "default": false
+          }
+        },
+        "required": []
+      },
+      "description": "Integration instances configuration"
+    },
+    "logs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Log type (file, tcp, udp, etc.)"
+          },
+          "path": {
+            "type": "string",
+            "description": "Path to log file"
+          },
+          "source": {
+            "type": "string",
+            "description": "Log source identifier"
+          }
+        }
+      },
+      "description": "Log collection configuration"
+    }
+  },
+  "required": [
+    "instances"
+  ],
   "additionalProperties": false
 }
