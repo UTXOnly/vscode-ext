@@ -1,0 +1,2562 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Datadog Agent Configuration",
+  "type": "object",
+  "properties": {
+    "api_key": {
+      "type": "string",
+      "description": ""
+    },
+    "app_key": {
+      "type": "string",
+      "description": "The application key used to access Datadog's programatic API. Create a new application key here: https://app.datadoghq.com/organization-settings/application-keys . Read more about application keys here: https://docs.datadoghq.com/account_management/api-app-keys/#application-keys ."
+    },
+    "site": {
+      "type": "string",
+      "description": "",
+      "default": "datadoghq.com"
+    },
+    "dd_url": {
+      "type": "string",
+      "description": "",
+      "default": "https://app.datadoghq.com"
+    },
+    "proxy": {
+      "type": "object",
+      "properties": {
+        "skip_ssl_validation": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "sslkeylogfile": {
+          "type": "string",
+          "description": "",
+          "default": ""
+        },
+        "min_tls_version": {
+          "type": "string",
+          "description": "",
+          "default": "tlsv1.2"
+        },
+        "hostname": {
+          "type": "string",
+          "description": "",
+          "default": "auto-detected"
+        },
+        "hostname_file": {
+          "type": "string",
+          "description": ""
+        },
+        "hostname_fqdn": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "hostname_trust_uts_namespace": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "host_aliases": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "env": {
+          "type": "string",
+          "description": ""
+        },
+        "tag_value_split_separator": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": true
+        },
+        "checks_tag_cardinality": {
+          "type": "string",
+          "description": "",
+          "default": "low"
+        },
+        "dogstatsd_tag_cardinality": {
+          "type": "string",
+          "description": "",
+          "default": "low"
+        },
+        "histogram_aggregates": {
+          "type": "array",
+          "description": "",
+          "default": "[\"max\", \"median\", \"avg\", \"count\"]",
+          "items": {
+            "type": "string"
+          }
+        },
+        "histogram_percentiles": {
+          "type": "array",
+          "description": "",
+          "default": "[\"0.95\"]",
+          "items": {
+            "type": "string"
+          }
+        },
+        "histogram_copy_to_distribution": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "histogram_copy_to_distribution_prefix": {
+          "type": "string",
+          "description": ""
+        },
+        "aggregator_stop_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 2
+        },
+        "aggregator_buffer_size": {
+          "type": "integer",
+          "description": "",
+          "default": 100
+        },
+        "forwarder_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 20
+        },
+        "forwarder_retry_queue_payloads_max_size": {
+          "type": "integer",
+          "description": "",
+          "default": "15728640 (15MB)"
+        },
+        "forwarder_num_workers": {
+          "type": "integer",
+          "description": "",
+          "default": 1
+        },
+        "forwarder_stop_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 2
+        },
+        "http_protocol": {
+          "type": "string",
+          "description": "",
+          "default": "auto"
+        },
+        "forwarder_max_concurrent_requests": {
+          "type": "integer",
+          "description": "@ENV DD_FORWARDER_MAX_CONCURRENT_REQUESTS - integer - optional - default: 10 The maximum number of concurrent requests that each worker can have queued up at any one time. If the connection is over HTTP/1 each request will be waiting for the previous request to complete before sending the next one. With HTTP/2 each request can be sent before waiting for the response.",
+          "default": 10
+        },
+        "forwarder_storage_max_size_in_bytes": {
+          "type": "integer",
+          "description": "",
+          "default": 0
+        },
+        "forwarder_storage_max_disk_ratio": {
+          "type": "string",
+          "description": "",
+          "default": 0.8
+        },
+        "forwarder_outdated_file_in_days": {
+          "type": "integer",
+          "description": "",
+          "default": 10
+        },
+        "forwarder_high_prio_buffer_size": {
+          "type": "string",
+          "description": "Defines the size of the high prio buffer. Increasing the buffer size can help if payload drops occur due to high prio buffer being full.",
+          "default": 100
+        },
+        "forwarder_low_prio_buffer_size": {
+          "type": "string",
+          "description": "Defines the size of the low prio buffer.",
+          "default": 100
+        },
+        "forwarder_requeue_buffer_size": {
+          "type": "string",
+          "description": "Defines the size of the requeue prio buffer.",
+          "default": 100
+        },
+        "forwarder_backoff_base": {
+          "type": "string",
+          "description": "",
+          "default": 2
+        },
+        "forwarder_backoff_max": {
+          "type": "string",
+          "description": "",
+          "default": 64
+        },
+        "collect_ec2_tags": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "collect_ec2_instance_info": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "exclude_ec2_tags": {
+          "type": "array",
+          "description": "",
+          "default": "[]",
+          "items": {
+            "type": "string"
+          }
+        },
+        "collect_ec2_tags_use_imds": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "ec2_metadata_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 300
+        },
+        "ec2_prefer_imdsv2": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "collect_gce_tags": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "exclude_gce_tags": {
+          "type": "array",
+          "description": "",
+          "default": "[\"bosh_settings\" ,\"cli-cert\" ,\"common-psm1\" ,\"configure-sh\" ,\"containerd-configure-sh\" ,\"disable-address-manager\" ,\"disable-legacy-endpoints\" ,\"enable-oslogin\" ,\"gce-container-declaration\" ,\"google-container-manifest\" ,\"ipsec-cert\" ,\"k8s-node-setup-psm1\" ,\"kube-env\" ,\"kubeconfig\" ,\"kubelet-config\" ,\"serial-port-logging-enable\" ,\"shutdown-script\" ,\"ssh-keys\" ,\"sshKeys\" ,\"ssl-cert\" ,\"startup-script\" ,\"user-data\" ,\"windows-keys\" ,\"windows-startup-script-ps1\"]",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gce_send_project_id_tag": {
+          "type": "string",
+          "description": "",
+          "default": false
+        },
+        "gce_metadata_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 1000
+        },
+        "collect_gpu_tags": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "azure_hostname_style": {
+          "type": "string",
+          "description": "",
+          "default": "os"
+        }
+      },
+      "description": "Configuration for proxy"
+    },
+    "scrubber": {
+      "type": "object",
+      "properties": {
+        "no_proxy_nonexact_match": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "use_proxy_for_cloud_metadata": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "inventories_configuration_enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        }
+      },
+      "description": "Configuration for scrubber"
+    },
+    "auto_exit": {
+      "type": "object",
+      "properties": {},
+      "description": "Configuration for auto_exit"
+    },
+    "noprocess": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "excluded_processes": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "validation_period": {
+          "type": "integer",
+          "description": "",
+          "default": 60
+        }
+      },
+      "description": "Configuration for noprocess"
+    },
+    "fips": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "local_address": {
+          "type": "string",
+          "description": "",
+          "default": "localhost"
+        }
+      },
+      "description": "Configuration for fips"
+    },
+    "observability_pipelines_worker": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "url": {
+          "type": "string",
+          "description": "",
+          "default": ""
+        },
+        "python_version": {
+          "type": "integer",
+          "description": "",
+          "default": 2
+        },
+        "confd_path": {
+          "type": "string",
+          "description": ""
+        },
+        "additional_checksd": {
+          "type": "string",
+          "description": ""
+        },
+        "expvar_port": {
+          "type": "integer",
+          "description": "",
+          "default": 5000
+        },
+        "cmd_port": {
+          "type": "integer",
+          "description": "",
+          "default": 5001
+        },
+        "GUI_port": {
+          "type": "integer",
+          "description": ""
+        },
+        "GUI_session_expiration": {
+          "type": "string",
+          "description": ""
+        },
+        "health_port": {
+          "type": "integer",
+          "description": "",
+          "default": 0
+        },
+        "check_runners": {
+          "type": "integer",
+          "description": "",
+          "default": 4
+        },
+        "enable_metadata_collection": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "enable_gohai": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "enable_signing_metadata_collection": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "server_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 30
+        },
+        "procfs_path": {
+          "type": "string",
+          "description": ""
+        },
+        "disable_py3_validation": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "python3_linter_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 120
+        },
+        "memtrack_enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "tracemalloc_debug": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "tracemalloc_include": {
+          "type": "string",
+          "description": ""
+        },
+        "tracemalloc_exclude": {
+          "type": "string",
+          "description": ""
+        },
+        "windows_use_pythonpath": {
+          "type": "boolean",
+          "description": ""
+        },
+        "secret_backend_command": {
+          "type": "string",
+          "description": ""
+        },
+        "secret_backend_arguments": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "secret_backend_output_max_size": {
+          "type": "integer",
+          "description": "",
+          "default": 1048576
+        },
+        "secret_backend_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 30
+        },
+        "secret_backend_skip_checks": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "secret_backend_remove_trailing_line_break": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for observability_pipelines_worker"
+    },
+    "profiling": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for profiling"
+    },
+    "logs_config": {
+      "type": "object",
+      "properties": {
+        "container_collect_all": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "logs_dd_url": {
+          "type": "string",
+          "description": ""
+        },
+        "logs_no_ssl": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "force_use_http": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "http_protocol": {
+          "type": "string",
+          "description": "",
+          "default": "auto"
+        },
+        "force_use_tcp": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "use_compression": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "compression_level": {
+          "type": "integer",
+          "description": "",
+          "default": 6
+        },
+        "batch_wait": {
+          "type": "integer",
+          "description": "",
+          "default": 5
+        },
+        "open_files_limit": {
+          "type": "integer",
+          "description": "",
+          "default": 500
+        },
+        "file_wildcard_selection_mode": {
+          "type": "string",
+          "description": "",
+          "default": "`by_name`"
+        },
+        "max_message_size_bytes": {
+          "type": "integer",
+          "description": "",
+          "default": 256000
+        },
+        "integrations_logs_files_max_size": {
+          "type": "integer",
+          "description": "",
+          "default": 10
+        },
+        "integrations_logs_total_usage": {
+          "type": "integer",
+          "description": "",
+          "default": 100
+        },
+        "kublet_api_client_read_timeout": {
+          "type": "string",
+          "description": "",
+          "default": "30s"
+        },
+        "k8s_container_use_kubelet_api": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for logs_config"
+    },
+    "streaming": {
+      "type": "object",
+      "properties": {
+        "streamlogs_log_file": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "description": "Configuration for streaming"
+    },
+    "apm_config": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "env": {
+          "type": "string",
+          "description": "",
+          "default": "none"
+        },
+        "receiver_port": {
+          "type": "integer",
+          "description": "",
+          "default": 8126
+        },
+        "receiver_socket": {
+          "type": "string",
+          "description": "",
+          "default": "unix:///var/run/datadog/apm.socket"
+        },
+        "apm_non_local_traffic": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "apm_dd_url": {
+          "type": "string",
+          "description": ""
+        },
+        "max_traces_per_second": {
+          "type": "integer",
+          "description": "",
+          "default": 10
+        },
+        "target_traces_per_second": {
+          "type": "integer",
+          "description": "",
+          "default": 10
+        },
+        "errors_per_second": {
+          "type": "integer",
+          "description": "",
+          "default": 10
+        },
+        "max_events_per_second": {
+          "type": "integer",
+          "description": "",
+          "default": 200
+        },
+        "max_memory": {
+          "type": "integer",
+          "description": "",
+          "default": 500000000
+        },
+        "max_cpu_percent": {
+          "type": "integer",
+          "description": "",
+          "default": 50
+        },
+        "obfuscation": {
+          "type": "string",
+          "description": "Defines obfuscation rules for sensitive data. See https://docs.datadoghq.com/tracing/setup_overview/configure_data_security/#agent-trace-obfuscation"
+        },
+        "filter_tags": {
+          "type": "string",
+          "description": ""
+        },
+        "filter_tags_regex": {
+          "type": "string",
+          "description": "Defines rules by which to filter traces based on tags with regex pattern for tag values. * require - list of key or key/value regex pattern strings - traces must have those tags in order to be sent to Datadog * reject - list of key or key/value regex pattern strings - traces with these tags are dropped by the Agent Note: Rules take into account the intersection of tags defined. Using regexp patterns for tag filtering can have performance implications, and is slower than typical tag filtering without regexp. However, this regexp is only run on the root span of a trace, so should not have a critical impact on overall performance. More detailed information can be found in the description of the `filter_tags` parameter above"
+        },
+        "replace_tags": {
+          "type": "string",
+          "description": ""
+        },
+        "ignore_resources": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "log_file": {
+          "type": "string",
+          "description": ""
+        },
+        "peer_tags": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "features": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "additional_endpoints": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "description": "Configuration for apm_config"
+    },
+    "debug": {
+      "type": "object",
+      "properties": {
+        "verbosity": {
+          "type": "string",
+          "description": "",
+          "default": "normal"
+        }
+      },
+      "description": "Configuration for debug"
+    },
+    "instrumentation": {
+      "type": "object",
+      "properties": {
+        "enabled_namespaces": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "disabled_namespaces": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "trace_buffer": {
+          "type": "integer",
+          "description": "",
+          "default": 0
+        },
+        "probabilistic_sampler": {
+          "type": "string",
+          "description": "Enables and configures the Probabilistic Sampler, compatible with the OTel Probabilistic Sampler Processor ( https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/probabilisticsamplerprocessor#probabilistic-sampling-processor )"
+        },
+        "error_tracking_standalone": {
+          "type": "string",
+          "description": "Enables Error Tracking Standalone"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for instrumentation"
+    },
+    "process_config": {
+      "type": "object",
+      "properties": {},
+      "description": "Configuration for process_config"
+    },
+    "run_in_core_agent": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enables process/container collection on the core Agent instead of the process Agent.",
+          "default": true
+        }
+      },
+      "description": "Configuration for run_in_core_agent"
+    },
+    "process_collection": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enables collection of information about running processes.",
+          "default": false
+        }
+      },
+      "description": "Configuration for process_collection"
+    },
+    "container_collection": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "string",
+          "description": "",
+          "default": "false"
+        },
+        "expvar_port": {
+          "type": "string",
+          "description": "",
+          "default": 6062
+        },
+        "cmd_port": {
+          "type": "string",
+          "description": "Port for configuring runtime settings for the process Agent.",
+          "default": 6162
+        },
+        "log_file": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "description": "Configuration for container_collection"
+    },
+    "intervals": {
+      "type": "object",
+      "properties": {},
+      "description": "Configuration for intervals"
+    },
+    "process_discovery": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Toggles the `process_discovery` check. If enabled, this check gathers information about running integrations.",
+          "default": true
+        },
+        "interval": {
+          "type": "string",
+          "description": "An interval in hours that specifies how often the process discovery check should run.",
+          "default": "4h - minimum: 10m"
+        },
+        "blacklist_patterns": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "queue_size": {
+          "type": "integer",
+          "description": "",
+          "default": 256
+        },
+        "process_queue_bytes": {
+          "type": "integer",
+          "description": "",
+          "default": 60000000
+        },
+        "rt_queue_size": {
+          "type": "integer",
+          "description": "",
+          "default": 5
+        },
+        "max_per_message": {
+          "type": "integer",
+          "description": "",
+          "default": 100
+        },
+        "dd_agent_bin": {
+          "type": "string",
+          "description": ""
+        },
+        "dd_agent_env": {
+          "type": "string",
+          "description": "",
+          "default": ""
+        },
+        "scrub_args": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "custom_sensitive_words": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "disable_realtime_checks": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for process_discovery"
+    },
+    "connections_monitoring": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "string",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for connections_monitoring"
+    },
+    "collector": {
+      "type": "object",
+      "properties": {
+        "workers": {
+          "type": "integer",
+          "description": "",
+          "default": 4
+        }
+      },
+      "description": "Configuration for collector"
+    },
+    "compliance_config": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "dir": {
+          "type": "string",
+          "description": "",
+          "default": "/etc/datadog-agent/compliance.d"
+        },
+        "check_interval": {
+          "type": "string",
+          "description": "",
+          "default": "20m"
+        },
+        "check_max_events_per_run": {
+          "type": "integer",
+          "description": "",
+          "default": 100
+        }
+      },
+      "description": "Configuration for compliance_config"
+    },
+    "sbom": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "set to true to enable Infrastructure Vulnerabiltilies",
+          "default": false
+        }
+      },
+      "description": "Configuration for sbom"
+    },
+    "system_probe_config": {
+      "type": "object",
+      "properties": {
+        "sysprobe_socket": {
+          "type": "string",
+          "description": "",
+          "default": "/opt/datadog-agent/run/sysprobe.sock"
+        },
+        "log_file": {
+          "type": "string",
+          "description": "",
+          "default": "/var/log/datadog/system-probe.log"
+        }
+      },
+      "description": "Configuration for system_probe_config"
+    },
+    "langauge_detection": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "string",
+          "description": "",
+          "default": false
+        },
+        "health_port": {
+          "type": "integer",
+          "description": "",
+          "default": 0
+        }
+      },
+      "description": "Configuration for langauge_detection"
+    },
+    "memory_controller": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "thresholds": {
+          "type": "string",
+          "description": "Thresholds and the respective active actions to trigger when memory usage is above the specified threshold. Threshold can be either an absolute value - such as 500MB or 2GB - or a percentage of the cgroup allocated memory such as 50%. The action can be: - gc: to trigger the Go garbage collector - profile: to generate a system-probe memory profile in /tmp - log: to simply log that the threshold was reached"
+        },
+        "pressure_levels": {
+          "type": "string",
+          "description": "Pressure levels and the respective active actions to trigger when memory usage reaches the specified level. The pressure level is 'low', 'medium' or 'critical'. The actions are the same for thresholds (see above)."
+        },
+        "fim_enabled": {
+          "type": "boolean",
+          "description": "Set to true to enable the File Integrity Monitoring (FIM) feature of Cloud Workload Security (CWS).",
+          "default": false
+        },
+        "sysprobe_socket": {
+          "type": "string",
+          "description": "",
+          "default": "localhost:3334"
+        },
+        "socket": {
+          "type": "string",
+          "description": "",
+          "default": "/opt/datadog-agent/run/runtime-security.sock"
+        }
+      },
+      "description": "Configuration for memory_controller"
+    },
+    "policies": {
+      "type": "object",
+      "properties": {},
+      "description": "Configuration for policies"
+    },
+    "syscall_monitor": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "custom_sensitive_words": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "envs_with_value": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      },
+      "description": "Configuration for syscall_monitor"
+    },
+    "activity_dump": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "traced_cgroups_count": {
+          "type": "integer",
+          "description": "",
+          "default": 5
+        },
+        "dump_duration": {
+          "type": "string",
+          "description": "",
+          "default": "30m"
+        }
+      },
+      "description": "Configuration for activity_dump"
+    },
+    "network": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Set to true to enable Cloud Security Posture Management (CSPM).",
+          "default": false
+        },
+        "socket": {
+          "type": "string",
+          "description": "The full path to the location of the unix socket where security runtime module is accessed.",
+          "default": "/opt/datadog-agent/run/runtime-security.sock"
+        },
+        "use_dogstatsd": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "dogstatsd_port": {
+          "type": "integer",
+          "description": "",
+          "default": 8125
+        },
+        "bind_host": {
+          "type": "string",
+          "description": "",
+          "default": "localhost"
+        },
+        "dogstatsd_socket": {
+          "type": "string",
+          "description": "",
+          "default": "/var/run/datadog/dsd.socket"
+        },
+        "dogstatsd_origin_detection": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "dogstatsd_origin_detection_client": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "dogstatsd_buffer_size": {
+          "type": "integer",
+          "description": "",
+          "default": 8192
+        },
+        "dogstatsd_non_local_traffic": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "dogstatsd_stats_enable": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "dogstatsd_logging_enabled": {
+          "type": "boolean",
+          "description": "Set to true to write DogstatsD metrics received by the Agent to dogstats_stats log files. Requires `dogstatsd_stats_enable: true`.",
+          "default": true
+        },
+        "dogstatsd_log_file_max_size": {
+          "type": "string",
+          "description": "Maximum size of dogstatsd log file. Use either a size (for example, 10MB) or provide value in bytes (for example, 10485760.)",
+          "default": "10MB"
+        },
+        "dogstatsd_queue_size": {
+          "type": "integer",
+          "description": "",
+          "default": 1024
+        },
+        "dogstatsd_stats_buffer": {
+          "type": "integer",
+          "description": "",
+          "default": 10
+        },
+        "dogstatsd_stats_port": {
+          "type": "integer",
+          "description": "",
+          "default": 5000
+        },
+        "dogstatsd_so_rcvbuf": {
+          "type": "integer",
+          "description": "",
+          "default": 0
+        },
+        "dogstatsd_metrics_stats_enable": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "dogstatsd_tags": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "dogstatsd_mapper_cache_size": {
+          "type": "integer",
+          "description": "",
+          "default": 1000
+        },
+        "dogstatsd_entity_id_precedence": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "dogstatsd_no_aggregation_pipeline": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "dogstatsd_no_aggregation_pipeline_batch_size": {
+          "type": "integer",
+          "description": "",
+          "default": 2048
+        },
+        "statsd_forward_host": {
+          "type": "string",
+          "description": "",
+          "default": ""
+        },
+        "statsd_forward_port": {
+          "type": "integer",
+          "description": "",
+          "default": 0
+        },
+        "statsd_metric_namespace": {
+          "type": "string",
+          "description": "",
+          "default": ""
+        },
+        "jmx_custom_jars": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "jmx_use_cgroup_memory_limit": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "jmx_use_container_support": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "jmx_max_ram_percentage": {
+          "type": "string",
+          "description": "",
+          "default": 25.0
+        },
+        "jmx_log_file": {
+          "type": "string",
+          "description": ""
+        },
+        "jmx_max_restarts": {
+          "type": "integer",
+          "description": "",
+          "default": 3
+        },
+        "jmx_restart_interval": {
+          "type": "integer",
+          "description": "",
+          "default": 5
+        },
+        "jmx_check_period": {
+          "type": "integer",
+          "description": "",
+          "default": 15000
+        },
+        "jmx_thread_pool_size": {
+          "type": "integer",
+          "description": "",
+          "default": 3
+        },
+        "jmx_collection_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 60
+        },
+        "jmx_reconnection_thread_pool_size": {
+          "type": "integer",
+          "description": "",
+          "default": 3
+        },
+        "jmx_reconnection_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 60
+        },
+        "jmx_statsd_telemetry_enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "jmx_telemetry_enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "log_level": {
+          "type": "string",
+          "description": "",
+          "default": "info"
+        },
+        "log_file": {
+          "type": "string",
+          "description": ""
+        },
+        "log_format_json": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "log_to_console": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "disable_file_logging": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "log_file_max_size": {
+          "type": "string",
+          "description": "",
+          "default": "10MB"
+        },
+        "log_file_max_rolls": {
+          "type": "integer",
+          "description": "",
+          "default": 1
+        },
+        "log_to_syslog": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "syslog_uri": {
+          "type": "string",
+          "description": ""
+        },
+        "syslog_rfc": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "syslog_pem": {
+          "type": "string",
+          "description": ""
+        },
+        "syslog_key": {
+          "type": "string",
+          "description": ""
+        },
+        "syslog_tls_verify": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "log_format_rfc3339": {
+          "type": "boolean",
+          "description": ""
+        },
+        "log_all_goroutines_when_unhealthy": {
+          "type": "boolean",
+          "description": ""
+        },
+        "autoconf_template_dir": {
+          "type": "string",
+          "description": "",
+          "default": "/datadog/check_configs"
+        },
+        "autoconf_config_files_poll": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "autoconf_config_files_poll_interval": {
+          "type": "integer",
+          "description": "",
+          "default": 60
+        },
+        "extra_config_providers": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "autoconfig_exclude_features": {
+          "type": "string",
+          "description": ""
+        },
+        "autoconfig_include_features": {
+          "type": "string",
+          "description": ""
+        },
+        "container_cgroup_root": {
+          "type": "string",
+          "description": "",
+          "default": "/host/sys/fs/cgroup/"
+        },
+        "container_proc_root": {
+          "type": "string",
+          "description": "",
+          "default": "/host/proc"
+        },
+        "listeners": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "extra_listeners": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "ac_exclude": {
+          "type": "string",
+          "description": ""
+        },
+        "ac_include": {
+          "type": "string",
+          "description": ""
+        },
+        "exclude_pause_container": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "docker_query_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 5
+        },
+        "ad_config_poll_interval": {
+          "type": "integer",
+          "description": "",
+          "default": 10
+        },
+        "ad_allowed_env_vars": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "ad_disable_env_var_resolution": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for network"
+    },
+    "cloud_foundry_garden": {
+      "type": "object",
+      "properties": {
+        "listen_network": {
+          "type": "string",
+          "description": "",
+          "default": "unix"
+        },
+        "listen_address": {
+          "type": "string",
+          "description": "",
+          "default": "/var/vcap/data/garden/garden.sock"
+        },
+        "podman_db_path": {
+          "type": "string",
+          "description": "",
+          "default": ""
+        }
+      },
+      "description": "Configuration for cloud_foundry_garden"
+    },
+    "cluster_agent": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Set to true to enable the Cluster Agent.",
+          "default": false
+        },
+        "auth_token": {
+          "type": "string",
+          "description": "Auth token used to make requests to the Kubernetes API server.",
+          "default": ""
+        },
+        "url": {
+          "type": "string",
+          "description": "The Cluster Agent endpoint. There's no need to set it if \"kubernetes_service_name\" is set.",
+          "default": ""
+        },
+        "kubernetes_service_name": {
+          "type": "string",
+          "description": "Name of the Kubernetes service for the Cluster Agent.",
+          "default": "datadog-cluster-agent"
+        },
+        "max_leader_connections": {
+          "type": "integer",
+          "description": "Maximum number of connections between a follower and a leader.",
+          "default": 100
+        },
+        "client_reconnect_period_seconds": {
+          "type": "integer",
+          "description": "Set the refersh period for Agent to Cluster Agent connection (new connection is created, old connection is closed). Set to 0 to disable periodic reconnection.",
+          "default": 1200
+        },
+        "tagging_fallback": {
+          "type": "boolean",
+          "description": "Set to true to enabled fallback to local metamapper when the connection with the Cluster Agent fails.",
+          "default": false
+        }
+      },
+      "description": "Configuration for cluster_agent"
+    },
+    "server": {
+      "type": "object",
+      "properties": {
+        "read_timeout_seconds": {
+          "type": "integer",
+          "description": "Read timeout in seconds.",
+          "default": 2
+        },
+        "write_timeout_seconds": {
+          "type": "integer",
+          "description": "Write timeout in seconds.",
+          "default": 2
+        },
+        "idle_timeout_seconds": {
+          "type": "integer",
+          "description": "Idle timeout in seconds.",
+          "default": 60
+        }
+      },
+      "description": "Configuration for server"
+    },
+    "cluster_checks": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "node_expiration_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 30
+        },
+        "warmup_duration": {
+          "type": "integer",
+          "description": "",
+          "default": 30
+        },
+        "cluster_tag_name": {
+          "type": "string",
+          "description": "",
+          "default": "cluster_name"
+        },
+        "extra_tags": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "advanced_dispatching_enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "clc_runners_port": {
+          "type": "integer",
+          "description": "",
+          "default": 5005
+        }
+      },
+      "description": "Configuration for cluster_checks"
+    },
+    "admission_controller": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for admission_controller"
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        }
+      },
+      "description": "Configuration for validation"
+    },
+    "mutation": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "mutate_unlabelled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "port": {
+          "type": "integer",
+          "description": "",
+          "default": 8000
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "description": "",
+          "default": 10
+        },
+        "service_name": {
+          "type": "string",
+          "description": "",
+          "default": "datadog-admission-controller"
+        },
+        "webhook_name": {
+          "type": "string",
+          "description": "",
+          "default": "datadog-webhook"
+        },
+        "pod_owners_cache_validity": {
+          "type": "integer",
+          "description": "",
+          "default": 10
+        },
+        "namespace_selector_fallback": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for mutation"
+    },
+    "certificate": {
+      "type": "object",
+      "properties": {
+        "validity_bound": {
+          "type": "integer",
+          "description": "",
+          "default": 8760
+        },
+        "expiration_threshold": {
+          "type": "integer",
+          "description": "",
+          "default": 720
+        },
+        "secret_name": {
+          "type": "string",
+          "description": "",
+          "default": "webhook-certificate"
+        }
+      },
+      "description": "Configuration for certificate"
+    },
+    "inject_config": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "endpoint": {
+          "type": "string",
+          "description": "",
+          "default": "/injectconfig"
+        },
+        "mode": {
+          "type": "string",
+          "description": "",
+          "default": "hostip"
+        },
+        "local_service_name": {
+          "type": "string",
+          "description": "",
+          "default": "datadog"
+        },
+        "socket_path": {
+          "type": "string",
+          "description": "",
+          "default": "/var/run/datadog"
+        },
+        "trace_agent_socket": {
+          "type": "string",
+          "description": "",
+          "default": "unix:///var/run/datadog/apm.socket"
+        },
+        "type_socket_volumes": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for inject_config"
+    },
+    "inject_tags": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "endpoint": {
+          "type": "string",
+          "description": "",
+          "default": "/injecttags"
+        },
+        "failure_policy": {
+          "type": "string",
+          "description": "",
+          "default": "Ignore"
+        },
+        "reinvocation_policy": {
+          "type": "string",
+          "description": "",
+          "default": "IfNeeded"
+        },
+        "add_aks_selectors": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for inject_tags"
+    },
+    "auto_instrumentation": {
+      "type": "object",
+      "properties": {},
+      "description": "Configuration for auto_instrumentation"
+    },
+    "init_resources": {
+      "type": "object",
+      "properties": {
+        "cpu": {
+          "type": "string",
+          "description": ""
+        },
+        "memory": {
+          "type": "string",
+          "description": ""
+        },
+        "init_security_context": {
+          "type": "string",
+          "description": ""
+        },
+        "container_cgroup_prefix": {
+          "type": "string",
+          "description": "",
+          "default": "/docker/"
+        },
+        "docker_labels_as_tags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": true
+        },
+        "docker_env_as_tags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": true
+        },
+        "kubernetes_pod_labels_as_tags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": true
+        },
+        "kubernetes_pod_annotations_as_tags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": true
+        },
+        "kubernetes_namespace_labels_as_tags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": true
+        },
+        "container_env_as_tags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": true
+        },
+        "container_labels_as_tags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": true
+        },
+        "ecs_agent_container_name": {
+          "type": "string",
+          "description": "",
+          "default": "ecs-agent"
+        },
+        "ecs_agent_url": {
+          "type": "string",
+          "description": "",
+          "default": "http://localhost:51678"
+        },
+        "ecs_collect_resource_tags_ec2": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "ecs_resource_tags_replace_colon": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "ecs_metadata_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 500
+        },
+        "ecs_task_collection_enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "cri_socket_path": {
+          "type": "string",
+          "description": "",
+          "default": "/var/run/containerd/containerd.sock"
+        },
+        "cri_connection_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 1
+        },
+        "cri_query_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 5
+        },
+        "containerd_namespace": {
+          "type": "array",
+          "description": "",
+          "default": "[]",
+          "items": {
+            "type": "string"
+          }
+        },
+        "containerd_namespaces": {
+          "type": "array",
+          "description": "",
+          "default": "[]",
+          "items": {
+            "type": "string"
+          }
+        },
+        "containerd_exclude_namespaces": {
+          "type": "array",
+          "description": "",
+          "default": "[\"moby\"]",
+          "items": {
+            "type": "string"
+          }
+        },
+        "kubernetes_kubelet_host": {
+          "type": "string",
+          "description": ""
+        },
+        "kubernetes_http_kubelet_port": {
+          "type": "integer",
+          "description": "",
+          "default": 10255
+        },
+        "kubernetes_https_kubelet_port": {
+          "type": "integer",
+          "description": "",
+          "default": 10250
+        },
+        "kubelet_tls_verify": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "kubelet_client_ca": {
+          "type": "string",
+          "description": "",
+          "default": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+        },
+        "kubelet_auth_token_path": {
+          "type": "string",
+          "description": ""
+        },
+        "kubelet_client_crt": {
+          "type": "string",
+          "description": ""
+        },
+        "kubelet_client_key": {
+          "type": "string",
+          "description": ""
+        },
+        "kubelet_wait_on_missing_container": {
+          "type": "integer",
+          "description": "",
+          "default": 0
+        },
+        "kubelet_cache_pods_duration": {
+          "type": "integer",
+          "description": "",
+          "default": 5
+        },
+        "kubernetes_pod_expiration_duration": {
+          "type": "integer",
+          "description": "",
+          "default": 900
+        },
+        "kubelet_listener_polling_interval": {
+          "type": "integer",
+          "description": "",
+          "default": 5
+        },
+        "kubernetes_kubeconfig_path": {
+          "type": "string",
+          "description": "",
+          "default": ""
+        },
+        "kubernetes_apiserver_ca_path": {
+          "type": "string",
+          "description": "",
+          "default": ""
+        },
+        "kubernetes_apiserver_tls_verify": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "kubernetes_apiserver_use_protobuf": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "kubernetes_collect_metadata_tags": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "kubernetes_metadata_tag_update_freq": {
+          "type": "integer",
+          "description": "",
+          "default": 60
+        },
+        "kubernetes_apiserver_client_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 10
+        },
+        "collect_kubernetes_events": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "kubernetes_event_collection_timeout": {
+          "type": "integer",
+          "description": "",
+          "default": 100
+        },
+        "leader_election": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "leader_lease_duration": {
+          "type": "integer",
+          "description": "",
+          "default": 60
+        },
+        "kubernetes_node_labels_as_tags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": true
+        },
+        "kubernetes_node_annotations_as_tags": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": true
+        },
+        "kubernetes_node_annotations_as_host_aliases": {
+          "type": "string",
+          "description": ""
+        },
+        "cluster_name": {
+          "type": "string",
+          "description": ""
+        },
+        "disable_cluster_name_tag_key": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for init_resources"
+    },
+    "prometheus_scrape": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enables the prometheus config provider",
+          "default": false
+        },
+        "service_endpoints": {
+          "type": "boolean",
+          "description": "Enables Service Endpoints checks in the prometheus config provider",
+          "default": false
+        }
+      },
+      "description": "Configuration for prometheus_scrape"
+    },
+    "checks": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "description": "Version of the openmetrics check to be scheduled by the Prometheus auto-discovery",
+          "default": 1
+        }
+      },
+      "description": "Configuration for checks"
+    },
+    "cloud_foundry_bbs": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "",
+          "default": "https://bbs.service.cf.internal:8889"
+        },
+        "poll_interval": {
+          "type": "integer",
+          "description": "",
+          "default": 15
+        },
+        "ca_file": {
+          "type": "string",
+          "description": "",
+          "default": ""
+        },
+        "cert_file": {
+          "type": "string",
+          "description": "",
+          "default": ""
+        },
+        "key_file": {
+          "type": "string",
+          "description": "",
+          "default": ""
+        },
+        "env_include": {
+          "type": "array",
+          "description": "",
+          "default": "[]",
+          "items": {
+            "type": "string"
+          }
+        },
+        "env_exclude": {
+          "type": "array",
+          "description": "",
+          "default": "[]",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Configuration for cloud_foundry_bbs"
+    },
+    "cloud_foundry_cc": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "",
+          "default": "https://cloud-controller-ng.service.cf.internal:9024"
+        },
+        "client_id": {
+          "type": "string",
+          "description": ""
+        },
+        "client_secret": {
+          "type": "string",
+          "description": ""
+        },
+        "skip_ssl_validation": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "poll_interval": {
+          "type": "integer",
+          "description": "",
+          "default": 60
+        },
+        "apps_batch_size": {
+          "type": "integer",
+          "description": "",
+          "default": 5000
+        }
+      },
+      "description": "Configuration for cloud_foundry_cc"
+    },
+    "network_devices": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "description": "Namespace can be used to disambiguate devices with the same IP. Changing namespace will cause devices being recreated in NDM app. It should contain less than 100 characters and should not contain any of `<`, `>`, `\\n`, `\\t`, `\\r` characters. This field is used by NDM features (SNMP check, SNMP Traps listener, etc).",
+          "default": "default"
+        }
+      },
+      "description": "Configuration for network_devices"
+    },
+    "autodiscovery": {
+      "type": "object",
+      "properties": {
+        "workers": {
+          "type": "integer",
+          "description": "The number of concurrent tasks used to discover SNMP devices. Increasing this value discovers devices faster but at the cost of increased resource consumption.",
+          "default": 2
+        },
+        "discovery_interval": {
+          "type": "integer",
+          "description": "How often to discover new SNMP devices, in seconds. Decreasing this value discovers devices faster (within the limit of the time taken to scan subnets) but at the cost of increased resource consumption.",
+          "default": 3600
+        },
+        "discovery_allowed_failures": {
+          "type": "integer",
+          "description": "The number of failed requests to a given SNMP device before removing it from the list of monitored devices. If a device shuts down, the Agent stops monitoring it after `discovery_interval * discovery_allowed_failures` seconds.",
+          "default": 3
+        },
+        "loader": {
+          "type": "string",
+          "description": "Check loader to use. Available loaders: - core: (recommended) Uses new corecheck SNMP integration - python: Uses legacy python SNMP integration",
+          "default": "python"
+        },
+        "min_collection_interval": {
+          "type": "number",
+          "description": "This changes the collection interval for the check instances created from discovered SNMP devices. For more information, see: https://docs.datadoghq.com/developers/write_agent_check/#collection-interval",
+          "default": 15
+        },
+        "use_device_id_as_hostname": {
+          "type": "boolean",
+          "description": "Use `device:<DEVICE_ID>` (device_id is composed of `<NAMESPACE>:<DEVICE_IP_ADDRESS>`) as `hostname` for metrics and service checks (meaning that metrics and services checks will have `host:device:<DEVICE_ID>` as tag). This option is needed for custom tags.",
+          "default": false
+        },
+        "collect_topology": {
+          "type": "boolean",
+          "description": "Enable the collection of topology (LLDP/CDP) data",
+          "default": true
+        }
+      },
+      "description": "Configuration for autodiscovery"
+    },
+    "ping": {
+      "type": "object",
+      "properties": {},
+      "description": "Configuration for ping"
+    },
+    "snmp_traps": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Set to true to enable collection of traps.",
+          "default": false
+        },
+        "port": {
+          "type": "integer",
+          "description": "",
+          "default": 9162
+        },
+        "community_strings": {
+          "type": "array",
+          "description": "A list of known SNMP community strings that devices can use to send traps to the Agent. Traps with an unknown community string are ignored. Enclose the community string with single quote like below (to avoid special characters being interpreted). Must be non-empty.",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "bind_host": {
+          "type": "string",
+          "description": "The hostname to listen on for incoming trap packets. Binds to 0.0.0.0 by default (accepting all packets)."
+        }
+      },
+      "description": "Configuration for snmp_traps",
+      "required": [
+        "community_strings"
+      ]
+    },
+    "netflow": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Set to true to enable collection of NetFlow traffic.",
+          "default": false
+        }
+      },
+      "description": "Configuration for netflow"
+    },
+    "listeners": {
+      "type": "object",
+      "properties": {
+        "reverse_dns_enrichment_enabled": {
+          "type": "boolean",
+          "description": "Set to true to enable reverse DNS enrichment of private source and destination IP addresses in NetFlow records.",
+          "default": false
+        }
+      },
+      "description": "Configuration for listeners"
+    },
+    "reverse_dns_enrichment": {
+      "type": "object",
+      "properties": {
+        "workers": {
+          "type": "integer",
+          "description": "The number of concurrent workers used to perform reverse DNS lookups.",
+          "default": 10
+        },
+        "chan_size": {
+          "type": "integer",
+          "description": "The size of the channel used to send reverse DNS lookup requests to the workers.",
+          "default": 5000
+        }
+      },
+      "description": "Configuration for reverse_dns_enrichment"
+    },
+    "cache": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Set to true to enable reverse DNS enrichment caching.",
+          "default": true
+        },
+        "entry_ttl": {
+          "type": "string",
+          "description": "The amount of time that a cache entry remains valid before it is expired and removed from the cache.",
+          "default": "24h"
+        },
+        "clean_interval": {
+          "type": "string",
+          "description": "An interval that specifies how often expired entries are removed from the cache to free space.",
+          "default": "2h"
+        },
+        "persist_interval": {
+          "type": "string",
+          "description": "An interval that specifies how often the cache is persisted to disk so the cache can be reloaded when the Agent is upgraded or restarted.",
+          "default": "2h"
+        },
+        "max_retries": {
+          "type": "integer",
+          "description": "The maximum number of retries to perform when a DNS lookup operation fails, after which the hostname \"\" is returned and cached for the IP address.",
+          "default": 10
+        },
+        "max_size": {
+          "type": "integer",
+          "description": "The maximum size in entries of the cache, above which additional entries will not be cached.",
+          "default": 1000000
+        }
+      },
+      "description": "Configuration for cache"
+    },
+    "rate_limiter": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Set to true to enable the reverse DNS enrichment rate limiter.",
+          "default": true
+        },
+        "limit_per_sec": {
+          "type": "integer",
+          "description": "The maximum number of reverse DNS lookups allowed per second by the rate limiter.",
+          "default": 1000
+        },
+        "limit_throttled_per_sec": {
+          "type": "integer",
+          "description": "The maximum number of reverse DNS lookups allowed per second when the rate limiter is throttled due to errors exceeding the threshold.",
+          "default": 1
+        },
+        "throttle_error_threshold": {
+          "type": "integer",
+          "description": "The number of consecutive errors that will trigger the rate limiter to throttle down to limit_throttled_per_sec.",
+          "default": 10
+        },
+        "recovery_intervals": {
+          "type": "integer",
+          "description": "The number of intervals over which to increase the rate limit back to limit_per_sec when lookups are again successful after being throttled due to errors.",
+          "default": 5
+        },
+        "recovery_interval": {
+          "type": "string",
+          "description": "The interval between incrementally increasing the rate limit back to limit_per_sec when lookups are again successful after being throttled due to errors. The rate limit will be increased by (limit_per_sec - limit_throttled_per_sec) / recovery_intervals every recovery_interval, until it reaches limit_per_sec.  For example, with limit_per_sec=1000, limit_throttled_per_sec=1, recovery_intervals=5, recovery_interval=5s, the limit will be increased by 200 every 5 seconds until reaching 1000.",
+          "default": "5s"
+        }
+      },
+      "description": "Configuration for rate_limiter"
+    },
+    "ha_agent": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Set to true to enable High Availability Agent feature.",
+          "default": false
+        },
+        "config_id": {
+          "type": "string",
+          "description": "The config_id configuration is used by High Availability Agent to assign a specific config ID to an Agent. When used with `ha_agent.enabled: true`, all Agents with the same config_id will be part of the same group of Agents; meaning that, one Agent within this group is designated as primary and others as standby."
+        }
+      },
+      "description": "Configuration for ha_agent"
+    },
+    "otlp_config": {
+      "type": "object",
+      "properties": {},
+      "description": "Configuration for otlp_config"
+    },
+    "receiver": {
+      "type": "object",
+      "properties": {},
+      "description": "Configuration for receiver"
+    },
+    "protocols": {
+      "type": "object",
+      "properties": {},
+      "description": "Configuration for protocols"
+    },
+    "grpc": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "description": "",
+          "default": "0.0.0.0:4317"
+        },
+        "transport": {
+          "type": "string",
+          "description": "",
+          "default": "tcp"
+        },
+        "max_recv_msg_size_mib": {
+          "type": "number",
+          "description": "",
+          "default": 4
+        }
+      },
+      "description": "Configuration for grpc"
+    },
+    "http": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "description": "",
+          "default": "0.0.0.0:4318"
+        }
+      },
+      "description": "Configuration for http"
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "resource_attributes_as_tags": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "instrumentation_scope_metadata_as_tags": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "tag_cardinality": {
+          "type": "string",
+          "description": "",
+          "default": "low"
+        },
+        "delta_ttl": {
+          "type": "string",
+          "description": "",
+          "default": 3600
+        }
+      },
+      "description": "Configuration for metrics"
+    },
+    "histograms": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "description": "",
+          "default": "distributions"
+        },
+        "send_count_sum_metrics": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "send_aggregation_metrics": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for histograms"
+    },
+    "sums": {
+      "type": "object",
+      "properties": {
+        "cumulative_monotonic_mode": {
+          "type": "string",
+          "description": "",
+          "default": "to_delta"
+        },
+        "initial_cumulative_monotonic_value": {
+          "type": "string",
+          "description": "How to report the initial value for cumulative monotonic sums. Valid values are: - `auto` reports the initial value if its start timestamp is set and it happens after the process was started. - `drop` always drops the initial value. - `keep` always reports the initial value.",
+          "default": "auto"
+        }
+      },
+      "description": "Configuration for sums"
+    },
+    "summaries": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "description": "",
+          "default": "gauges"
+        }
+      },
+      "description": "Configuration for summaries"
+    },
+    "traces": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": true
+        },
+        "span_name_as_resource_name": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        },
+        "span_name_remappings": {
+          "type": "object",
+          "description": "",
+          "additionalProperties": true
+        }
+      },
+      "description": "Configuration for traces"
+    },
+    "probabilistic_sampler": {
+      "type": "object",
+      "properties": {
+        "sampling_percentage": {
+          "type": "number",
+          "description": "",
+          "default": 100
+        },
+        "ignore_missing_datadog_fields": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for probabilistic_sampler"
+    },
+    "logs": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "",
+          "default": false
+        }
+      },
+      "description": "Configuration for logs"
+    },
+    "system_tray": {
+      "type": "object",
+      "properties": {
+        "log_file": {
+          "type": "string",
+          "description": "The full path to the file where injection controller logs are written.",
+          "default": "c:\\programdata\\datadog\\logs\\apm-inject.log"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable internal profiling for the injection controller process.",
+          "default": false
+        },
+        "log_level": {
+          "type": "string",
+          "description": "Minimum log level of the injection controller. Valid log levels are: debug, info, warn, and error.",
+          "default": "info"
+        },
+        "log_to_console": {
+          "type": "boolean",
+          "description": "Set to 'false' to disable injection controller logging to stdout.",
+          "default": true
+        },
+        "socket_port": {
+          "type": "integer",
+          "description": "The port used for the injection controller communications API (served on localhost).",
+          "default": 3030
+        },
+        "DD_APM_TRACING_ENABLED": {
+          "type": "boolean",
+          "description": "Enable Datadog tracing. Docs: https://docs.datadoghq.com/tracing/trace_collection/",
+          "default": true
+        },
+        "DD_RUNTIME_METRICS_ENABLED": {
+          "type": "boolean",
+          "description": "Enable runtime metrics. Docs: https://docs.datadoghq.com/tracing/metrics/runtime_metrics/?tab=java#environment-variables",
+          "default": false
+        },
+        "DD_LOGS_INJECTION": {
+          "type": "boolean",
+          "description": "Enable automatic trace and span ID injection into logs. Docs: https://docs.datadoghq.com/tracing/other_telemetry/connect_logs_and_traces/",
+          "default": false
+        },
+        "DD_PROFILING_ENABLED": {
+          "type": "boolean",
+          "description": "Enable continuous profiling. Docs: https://docs.datadoghq.com/profiler/",
+          "default": false
+        },
+        "DD_DATA_STREAMS_ENABLED": {
+          "type": "boolean",
+          "description": "Enable data streams monitoring. Docs: https://docs.datadoghq.com/data_streams/",
+          "default": false
+        },
+        "DD_APPSEC_ENABLED": {
+          "type": "boolean",
+          "description": "Enable the Application Security product. Docs: https://docs.datadoghq.com/security/application_security/",
+          "default": false
+        },
+        "DD_IAST_ENABLED": {
+          "type": "boolean",
+          "description": "Enable Interactive Application Security Testing (IAST). Docs: https://docs.datadoghq.com/security/code_security/iast/setup/#amazon-ecs",
+          "default": false
+        },
+        "DD_DYNAMIC_INSTRUMENTATION_ENABLED": {
+          "type": "boolean",
+          "description": "Enable Dynamic Instrumentation. Docs: https://docs.datadoghq.com/dynamic_instrumentation/",
+          "default": false
+        },
+        "DD_DATA_JOBS_ENABLED": {
+          "type": "boolean",
+          "description": "Enable data jobs visibility.",
+          "default": false
+        },
+        "DD_APPSEC_SCA_ENABLED": {
+          "type": "boolean",
+          "description": "Enable Software Composition Analysis. Docs: https://docs.datadoghq.com/security/code_security/software_composition_analysis/",
+          "default": false
+        },
+        "DD_TRACE_DEBUG": {
+          "type": "boolean",
+          "description": "Enable debug logging for the tracer. Docs: https://docs.datadoghq.com/tracing/troubleshooting/tracer_debug_logs",
+          "default": false
+        }
+      },
+      "description": "Configuration for system_tray"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "api_key"
+  ]
+}
