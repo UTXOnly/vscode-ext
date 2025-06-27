@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=/Users/etienne.guillotmarquet/repos/vscode-ext/schemas/schema_files/redisdb.json
+
+init_config:
+  
+instances:
+  - host: test
+    port: 1000
+    
+  - host: test
+    port: 200
