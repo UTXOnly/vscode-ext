@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-const INTEGRATIONS = ["disk", "redis"];
+const INTEGRATIONS = ["disk", "redisdb"];
 
 export const configureYamlSchemas = async (
   context: vscode.ExtensionContext
