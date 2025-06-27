@@ -33,13 +33,17 @@ def rec_generate_nodes(current_node):
                 current_properties[prop_name]["example"] = property["value"]["example"]
             
             if "type" in property["value"]:
-                current_properties[prop_name]["type"] = property["value"]["type"]
+                # typecasting specific values
+                prop_type = property["value"]["type"]
+                if prop_type in ["integer", "double", "float", "decimal"]:
+                    prop_type = "number"
+                current_properties[prop_name]["type"] = prop_type
 
-        # Make a recursive call downward if there is a list of subproperties:
+        # Make a recursive call downward if there is a list of sub-properties:
         if "options" in property:
-            inner_properties = rec_generate_nodes(property) # not tail recursive but im lazy :(
+            inner_properties = rec_generate_nodes(property) # not tail recursive but im lazy :)
             current_properties[prop_name]["properties"] = inner_properties
-            current_properties[prop_name]["type"] = "object"
+            current_properties[prop_name]["type"] = "anyOf"
 
     return current_properties
 
@@ -48,6 +52,7 @@ def generate_json_spec(integration_name, output_directory = SCHEMA_OUTPUT_DIRECT
     """
 
     url_path = f"{INTEGRATIONS_CORE_SOURCE}/{integration_name}/{SPEC_FILE_PATH}"
+    print(url_path)
     response = requests.get(url_path)
     response.raise_for_status()  # Raise an exception for bad status codes
 
@@ -67,18 +72,22 @@ def generate_json_spec(integration_name, output_directory = SCHEMA_OUTPUT_DIRECT
     init_config_properties = rec_generate_nodes(init_config)
     instance_properties = rec_generate_nodes(instances)
     
+    
     output_json = {
         "$schema": "https://json-schema.org/draft/2020-12/schema#",
         "title": f"{integration_name} integration schema",
         "type": "object",
         "properties": {
             "init_config": {
-                "type": "object",
+                "type": ["object", "null"],
                 "properties": init_config_properties,
             },
             "instances": {
-                "type": "object",
-                "properties": instance_properties,
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": instance_properties,
+                }
             },
         },
         "required": ["init_config", "instances"],

@@ -1,11 +1,10 @@
 # yaml-language-server: $schema=/Users/etienne.guillotmarquet/repos/vscode-ext/schemas/schema_files/disk.json
 
-init_config:
-  null
+init_config: 
+
 instances:
-  use_mount: true
-  file_system_exclude:
-  include_all_devices: true
-  timeout: 5
-  
+  - use_mount: true
+    file_system_exclude:
+    include_all_devices: true
+    timeout:   
   
