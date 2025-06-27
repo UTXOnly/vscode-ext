@@ -49,9 +49,7 @@ async function configureYamlSchemas(context: vscode.ExtensionContext): Promise<v
         const schemas = config.get('schemas') as Record<string, string | string[]> || {};
 
         const integrations = [
-            'disk', 'cpu', 'memory', 'network', 'postgres', 'mysql', 'redis', 
-            'nginx', 'apache', 'elasticsearch', 'kafka', 'rabbitmq', 
-            'mongodb', 'cassandra', 'docker', 'kubernetes'
+            'disk', 'redis'
         ];
 
         // Add integration-specific schemas
@@ -60,8 +58,8 @@ async function configureYamlSchemas(context: vscode.ExtensionContext): Promise<v
             schemas[schemaPath] = [
                 `**/${integration}.yaml`,
                 `**/${integration}.yml`,
-                `**/conf.d/${integration}.yaml`,
-                `**/conf.d/${integration}.yml`
+                `**/conf.d/${integration}.d/conf.yaml`,
+                `**/conf.d/${integration}.d/conf.yml`
             ];
         });
 
@@ -80,11 +78,7 @@ async function configureYamlSchemas(context: vscode.ExtensionContext): Promise<v
 {
     "yaml.schemas": {
         "${schemaDir}/disk.json": ["**/conf.d/disk.yaml", "**/conf.d/disk.yml"],
-        "${schemaDir}/postgres.json": ["**/conf.d/postgres.yaml", "**/conf.d/postgres.yml"],
-        "${schemaDir}/mysql.json": ["**/conf.d/mysql.yaml", "**/conf.d/mysql.yml"],
-        "${schemaDir}/redis.json": ["**/conf.d/redis.yaml", "**/conf.d/redis.yml"],
-        "${schemaDir}/nginx.json": ["**/conf.d/nginx.yaml", "**/conf.d/nginx.yml"],
-        "${schemaDir}/apache.json": ["**/conf.d/apache.yaml", "**/conf.d/apache.yml"]
+        "${schemaDir}/redis.json": ["**/conf.d/redis.yaml", "**/conf.d/redis.yml"]
     }
 }
 
