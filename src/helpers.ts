@@ -13,7 +13,7 @@ export const configureYamlSchemas = async (
 
     // Add integration-specific schemas
     INTEGRATIONS.forEach((integration) => {
-      const schemaPath = context.asAbsolutePath(`schemas/${integration}.json`);
+      const schemaPath = context.asAbsolutePath(`schemas/schema_files/${integration}.json`);
       schemas[schemaPath] = `**/${integration}.d/conf.{yaml,yml}`;
     });
 
@@ -43,8 +43,8 @@ const showManualConfigurationInstructions = async (schemaDir: string) => {
 
 {
     "yaml.schemas": {
-        "${schemaDir}/disk.json": ["**/conf.d/disk.yaml", "**/conf.d/disk.yml"],
-        "${schemaDir}/redis.json": ["**/conf.d/redis.yaml", "**/conf.d/redis.yml"]
+        "${schemaDir}/schema_files/disk.json": ["**/disk.d/conf.yaml", "**/disk.d/conf.yml"],
+        "${schemaDir}/schema_files/redisdb.json": ["**/redisdb.d/conf.yaml", "**/redisdb.d/conf.yml"]
     }
 }
 
