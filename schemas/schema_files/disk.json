@@ -1,11 +1,31 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "disk Integration JSON Schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema#",
+  "title": "disk integration schema",
   "type": "object",
   "properties": {
     "init_config": {
       "type": "object",
-      "properties": {}
+      "properties": {
+        "file_system_global_exclude": {
+          "description": "Instruct the check to always add these patterns to `file_system_exclude`.\n\nWARNING: Overriding these defaults could negatively impact your system or\nthe performance of the check.\n",
+          "example": [
+            "iso9660$",
+            "tracefs$"
+          ],
+          "type": "array"
+        },
+        "device_global_exclude": {
+          "description": "Instruct the check to always add these patterns to `device_exclude`.\n\nWARNING: Overriding these defaults could negatively impact your system or\nthe performance of the check.\n",
+          "type": "array"
+        },
+        "mount_point_global_exclude": {
+          "description": "Instruct the check to always add these patterns to `mount_point_exclude`.\n\nWARNING: Overriding these defaults could negatively impact your system or\nthe performance of the check.\n",
+          "example": [
+            "(/host)?/proc/sys/fs/binfmt_misc$"
+          ],
+          "type": "array"
+        }
+      }
     },
     "instances": {
       "type": "object",

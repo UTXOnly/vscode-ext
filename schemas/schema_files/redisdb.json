@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema#",
+  "title": "redisdb integration schema",
+  "type": "object",
+  "properties": {
+    "init_config": {
+      "type": "object",
+      "properties": {}
+    },
+    "instances": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "description": "Enter the host to connect to.",
+          "example": "localhost",
+          "type": "string"
+        },
+        "port": {
+          "description": "Enter the port of the host to connect to.",
+          "example": 6379,
+          "type": "integer"
+        },
+        "unix_socket_path": {
+          "description": "Connect through a unix socket instead of using a `host` and `port`.",
+          "example": "/var/run/redis/redis.sock",
+          "type": "string"
+        },
+        "db": {
+          "description": "The index of the database (keyspace) to use.\nThe default is index 0. Any other index results in a SELECT command sent upon connection\nto choose the desired database. For redis.clone, this can also be NA in which case the same database is\nused as in rc.\n",
+          "type": "integer"
+        },
+        "username": {
+          "description": "The username for the connection. Redis 6+ only.",
+          "type": "string"
+        },
+        "password": {
+          "description": "The password for the connection.",
+          "type": "string"
+        },
+        "collect_client_metrics": {
+          "description": "Collects metrics using the `CLIENT` command.\nThis requires the Redis CLIENT command to be available on your servers.\n",
+          "type": "boolean"
+        },
+        "socket_timeout": {
+          "description": "Custom timeout for the check request.",
+          "example": 5,
+          "type": "integer"
+        },
+        "ssl": {
+          "description": "Enable SSL/TLS encryption for the check.",
+          "type": "boolean"
+        },
+        "ssl_keyfile": {
+          "description": "The path to the client-side private keyfile.",
+          "example": "<CERT_KEY_PATH>",
+          "type": "string"
+        },
+        "ssl_certfile": {
+          "description": "The path to the client-side certificate file.",
+          "example": "<CERT_PEM_PATH>",
+          "type": "string"
+        },
+        "ssl_ca_certs": {
+          "description": "The path to the ca_certs file.",
+          "example": "<CERT_PATH>",
+          "type": "string"
+        },
+        "ssl_cert_reqs": {
+          "description": "Specifies whether a certificate is required from the\nother side of the connection, and whether it's validated if provided.\n  * 0 for ssl.CERT_NONE (certificates ignored)\n  * 1 for ssl.CERT_OPTIONAL (not required, but validated if provided)\n  * 2 for ssl.CERT_REQUIRED (required and validated)\n",
+          "example": 2,
+          "type": "integer"
+        },
+        "keys": {
+          "description": "Enter the list of keys to collect the lengths from.\nThe length is 1 for strings.\nThe length is zero for keys that have a type other than list, set, hash, or sorted set.\nNote: Keys can be expressed as patterns, see https://redis.io/commands/keys.\n",
+          "example": [
+            "<KEY_1>",
+            "<KEY_PATTERN>"
+          ],
+          "type": "array"
+        },
+        "warn_on_missing_keys": {
+          "description": "If you provide a list of 'keys', set this to true to have the Agent log a warning\nwhen keys are missing.\n",
+          "example": true,
+          "type": "boolean"
+        },
+        "slowlog-max-len": {
+          "description": "Set the maximum number of entries to fetch from the slow query log.\nBy default, the check reads this value from the redis config, but is limited to 128.\n\nSet a custom value here if you need to get more than 128 slowlog entries every 15 seconds.\nWarning: Higher values may impact the performance of your Redis instance.\n",
+          "example": 128,
+          "type": "integer"
+        },
+        "command_stats": {
+          "description": "Collect INFO COMMANDSTATS output as metrics.",
+          "type": "boolean"
+        },
+        "disable_connection_cache": {
+          "description": "Enable the connections cache so the check attempts to reuse the same Redis connections\nat every collection cycle. If disabled, this prevents stale connections.\n",
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "required": [
+    "init_config",
+    "instances"
+  ],
+  "additionalProperties": false
+}

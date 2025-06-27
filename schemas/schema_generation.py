@@ -1,16 +1,14 @@
-import sys
 import os
 import yaml
 import json
 import requests
-import pprint
 
 INTEGRATIONS_CORE_SOURCE = "https://raw.githubusercontent.com/DataDog/integrations-core/refs/heads/master"
 SCHEMA_OUTPUT_DIRECTORY = "./schema_files"
 SPEC_FILE_PATH = "/assets/configuration/spec.yaml"
 
 def rec_generate_nodes(current_node):
-    """ Recursively iterates down the datadog spec tree, generating the JSON schema nodes in the accumulator
+    """ Recursively iterates down the Datadog spec yaml tree, generating the JSON schema nodes 
     """
     if not "options" in current_node:
         return
@@ -54,30 +52,29 @@ def generate_json_spec(integration_name, output_directory = SCHEMA_OUTPUT_DIRECT
     response.raise_for_status()  # Raise an exception for bad status codes
 
     # Load the YAML content
-    config_spec = yaml.safe_load(response.text)
-    #pprint.pprint(config_spec)
-    
-    # Drill down to just the spec json:
+    config_spec = yaml.safe_load(response.text)    
     input_spec = {}
 
-    # Breaking out the spec file into its two main template sections, instances and init__config
+    # Drill down to just the relevant fields:
     for spec_file in config_spec["files"]:
         if f"{integration_name}.yaml" == spec_file["name"]:
             input_spec = spec_file["options"]
 
+    # Breaking out the spec file into its two main template sections, init_config, instances
     init_config, instances = input_spec[0], input_spec[1]
     
     # Running the instances json properties generation
+    init_config_properties = rec_generate_nodes(init_config)
     instance_properties = rec_generate_nodes(instances)
     
     output_json = {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "title": f"{integration_name} Integration JSON Schema",
+        "$schema": "https://json-schema.org/draft/2020-12/schema#",
+        "title": f"{integration_name} integration schema",
         "type": "object",
         "properties": {
             "init_config": {
                 "type": "object",
-                "properties": {},
+                "properties": init_config_properties,
             },
             "instances": {
                 "type": "object",
@@ -95,3 +92,4 @@ def generate_json_spec(integration_name, output_directory = SCHEMA_OUTPUT_DIRECT
 
 if __name__ == '__main__':
     generate_json_spec("disk")
+    generate_json_spec("redisdb")
