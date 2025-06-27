@@ -8,26 +8,12 @@ export class DatadogIntegrationFetcher {
     private readonly baseUrl = 'https://raw.githubusercontent.com/DataDog/integrations-core/master';
     private readonly integrations = [
         'disk',
-        'cpu',
-        'memory',
-        'network',
-        'postgres',
-        'mysql',
-        'redis',
-        'nginx',
-        'apache',
-        'elasticsearch',
-        'kafka',
-        'rabbitmq',
-        'mongodb',
-        'cassandra',
-        'docker',
-        'kubernetes'
+        'redisdb'
     ];
 
     public async initializeSchemas(context: vscode.ExtensionContext): Promise<void> {
         const schemaDir = path.join(context.extensionPath, 'schemas');
-        
+
         if (!fs.existsSync(schemaDir)) {
             fs.mkdirSync(schemaDir, { recursive: true });
         }
@@ -53,7 +39,7 @@ export class DatadogIntegrationFetcher {
 
     public async updateAllSchemas(context: vscode.ExtensionContext): Promise<void> {
         const schemaDir = path.join(context.extensionPath, 'schemas');
-        
+
         for (const integration of this.integrations) {
             const schemaPath = path.join(schemaDir, `${integration}.json`);
             try {
@@ -71,18 +57,18 @@ export class DatadogIntegrationFetcher {
         try {
             const specUrl = `${this.baseUrl}/${integration}/assets/configuration/spec.yaml`;
             console.log(`Downloading schema from: ${specUrl}`);
-            
+
             const response = await axios.get(specUrl, {
                 timeout: 10000,
                 headers: {
                     'User-Agent': 'Datadog-VSCode-Extension/1.0'
                 }
             });
-            
+
             if (response.status === 200) {
                 const yamlContent = response.data;
                 const jsonSchema = this.convertDatadogSpecToJsonSchema(yamlContent, integration);
-                
+
                 fs.writeFileSync(schemaPath, JSON.stringify(jsonSchema, null, 2));
                 console.log(`Downloaded and converted schema for ${integration}`);
             }
@@ -98,7 +84,7 @@ export class DatadogIntegrationFetcher {
         try {
             const spec = yaml.load(yamlContent) as any;
             console.log(`Processing spec for ${integration}:`, JSON.stringify(spec, null, 2));
-            
+
             const schema: any = {
                 $schema: "http://json-schema.org/draft-07/schema#",
                 title: `${spec.name || integration} Integration Configuration`,
@@ -178,7 +164,7 @@ export class DatadogIntegrationFetcher {
         if (option.options && Array.isArray(option.options)) {
             const instanceProps = this.extractPropertiesFromOptions(option.options);
             const requiredFields = this.getRequiredFields(option.options);
-            
+
             if (Object.keys(instanceProps).length > 0) {
                 schema.properties.instances = {
                     type: "array",
@@ -211,7 +197,7 @@ export class DatadogIntegrationFetcher {
 
     private extractPropertiesFromOptions(options: any[]): any {
         const properties: any = {};
-        
+
         for (const option of options) {
             if (option.name && option.value) {
                 // Direct property
@@ -226,7 +212,7 @@ export class DatadogIntegrationFetcher {
                 Object.assign(properties, templateProps);
             }
         }
-        
+
         return properties;
     }
 
@@ -240,8 +226,8 @@ export class DatadogIntegrationFetcher {
                 password: { type: "string", description: "Password for authentication" }
             },
             'instances/default': {
-                disable_generic_tags: { 
-                    type: "boolean", 
+                disable_generic_tags: {
+                    type: "boolean",
                     description: "Disable generic tags to avoid conflicts with other integrations",
                     default: false
                 }
@@ -251,36 +237,36 @@ export class DatadogIntegrationFetcher {
                 headers: { type: "object", description: "Additional HTTP headers" }
             },
             'init_config/default': {
-                min_collection_interval: { 
-                    type: "integer", 
+                min_collection_interval: {
+                    type: "integer",
                     description: "Minimum collection interval in seconds",
                     default: 15
                 }
             }
         };
-        
+
         return templates[templateName] || {};
     }
 
     private convertValueToProperty(value: any): any {
         const property: any = {};
-        
+
         if (value.type) {
             property.type = value.type;
         }
-        
+
         if (value.example !== undefined) {
             property.default = value.example;
         }
-        
+
         if (value.display_default !== undefined) {
             property.default = value.display_default;
         }
-        
+
         if (value.items) {
             property.items = this.convertValueToProperty(value.items);
         }
-        
+
         if (value.properties) {
             property.type = "object";
             property.properties = {};
@@ -288,31 +274,31 @@ export class DatadogIntegrationFetcher {
                 property.properties[key] = this.convertValueToProperty(propValue as any);
             }
         }
-        
+
         if (value.enum) {
             property.enum = value.enum;
         }
-        
+
         if (value.minimum !== undefined) {
             property.minimum = value.minimum;
         }
-        
+
         if (value.maximum !== undefined) {
             property.maximum = value.maximum;
         }
-        
+
         return property;
     }
 
     private getRequiredFields(options: any[]): string[] {
         const required: string[] = [];
-        
+
         for (const option of options) {
             if (option.required === true) {
                 required.push(option.name);
             }
         }
-        
+
         return required;
     }
 
